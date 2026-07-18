@@ -1,0 +1,174 @@
+{% extends "store/base.html" %}
+{% load store_extras %}
+{% block title %}Home — ShopEasy{% endblock %}
+
+{% block content %}
+
+<div class="banner-carousel" id="bannerCarousel">
+    <div class="banner-slide active" style="background-image: url('https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=1200');">
+        <div class="banner-overlay"></div>
+        <div class="banner-text">
+            <span class="banner-eyebrow">Big Savings Days</span>
+            <h1>Up to 40% off Electronics</h1>
+            <a href="{% url 'product_list' %}" class="btn btn-large">Shop Now</a>
+        </div>
+    </div>
+    <div class="banner-slide" style="background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200');">
+        <div class="banner-overlay"></div>
+        <div class="banner-text">
+            <span class="banner-eyebrow">New Season</span>
+            <h1>Fresh Fashion Arrivals</h1>
+            <a href="{% url 'product_list' %}" class="btn btn-large">Explore</a>
+        </div>
+    </div>
+    <div class="banner-slide" style="background-image: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200');">
+        <div class="banner-overlay"></div>
+        <div class="banner-text">
+            <span class="banner-eyebrow">Home Essentials</span>
+            <h1>Upgrade Your Space</h1>
+            <a href="{% url 'product_list' %}" class="btn btn-large">Shop Home</a>
+        </div>
+    </div>
+    <div class="banner-dots">
+        <span class="dot active" data-index="0"></span>
+        <span class="dot" data-index="1"></span>
+        <span class="dot" data-index="2"></span>
+    </div>
+</div>
+
+<h2 class="section-title">Shop by Category</h2>
+<div class="category-tiles">
+    {% for item in categories_with_icons %}
+        <a href="{% url 'product_list' %}?category={{ item.category.slug }}" class="category-tile">
+            <span class="tile-icon">{{ item.icon }}</span>
+            <span>{{ item.category.name }}</span>
+        </a>
+    {% empty %}
+        <p>No categories yet — add some from the admin panel.</p>
+    {% endfor %}
+</div>
+
+{% if top_picks %}
+<h2 class="section-title">Top Picks For You</h2>
+<div class="product-row">
+    {% for product in top_picks %}
+        <div class="product-card-mini">
+            <a href="{% url 'product_detail' product.slug %}">
+                <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                <h4>{{ product.name }}</h4>
+            </a>
+            <p class="price">₹{{ product.price }}</p>
+            <div class="cart-control" data-product-id="{{ product.id }}" data-style="mini">
+            {% if user.is_authenticated %}
+                {% with qty=cart_quantities|get_item:product.id %}
+                {% if qty %}
+                    <div class="mini-stepper">
+                        <form class="cart-form" action="{% url 'cart_decrement' product.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="qty-btn">−</button>
+                        </form>
+                        <span class="mini-stepper-count">{{ qty }}</span>
+                        <form class="cart-form" action="{% url 'cart_add' product.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="qty-btn">+</button>
+                        </form>
+                    </div>
+                {% else %}
+                    <form class="cart-form" action="{% url 'cart_add' product.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-small-full">Add to Cart</button>
+                    </form>
+                {% endif %}
+                {% endwith %}
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-small-full">Login to buy</a>
+            {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if new_arrivals %}
+<h2 class="section-title">New Arrivals</h2>
+<div class="product-row">
+    {% for product in new_arrivals %}
+        <div class="product-card-mini">
+            <a href="{% url 'product_detail' product.slug %}">
+                <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                <h4>{{ product.name }}</h4>
+            </a>
+            <p class="price">₹{{ product.price }}</p>
+            <div class="cart-control" data-product-id="{{ product.id }}" data-style="mini">
+            {% if user.is_authenticated %}
+                {% with qty=cart_quantities|get_item:product.id %}
+                {% if qty %}
+                    <div class="mini-stepper">
+                        <form class="cart-form" action="{% url 'cart_decrement' product.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="qty-btn">−</button>
+                        </form>
+                        <span class="mini-stepper-count">{{ qty }}</span>
+                        <form class="cart-form" action="{% url 'cart_add' product.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="qty-btn">+</button>
+                        </form>
+                    </div>
+                {% else %}
+                    <form class="cart-form" action="{% url 'cart_add' product.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-small-full">Add to Cart</button>
+                    </form>
+                {% endif %}
+                {% endwith %}
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-small-full">Login to buy</a>
+            {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% for section in category_sections %}
+<h2 class="section-title">{{ section.category.name }}</h2>
+<div class="product-row">
+    {% for product in section.products %}
+        <div class="product-card-mini">
+            <a href="{% url 'product_detail' product.slug %}">
+                <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                <h4>{{ product.name }}</h4>
+            </a>
+            <p class="price">₹{{ product.price }}</p>
+            <div class="cart-control" data-product-id="{{ product.id }}" data-style="mini">
+            {% if user.is_authenticated %}
+                {% with qty=cart_quantities|get_item:product.id %}
+                {% if qty %}
+                    <div class="mini-stepper">
+                        <form class="cart-form" action="{% url 'cart_decrement' product.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="qty-btn">−</button>
+                        </form>
+                        <span class="mini-stepper-count">{{ qty }}</span>
+                        <form class="cart-form" action="{% url 'cart_add' product.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="qty-btn">+</button>
+                        </form>
+                    </div>
+                {% else %}
+                    <form class="cart-form" action="{% url 'cart_add' product.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-small-full">Add to Cart</button>
+                    </form>
+                {% endif %}
+                {% endwith %}
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-small-full">Login to buy</a>
+            {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endfor %}
+
+{% endblock %}

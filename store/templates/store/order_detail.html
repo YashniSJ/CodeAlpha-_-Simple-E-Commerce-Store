@@ -1,0 +1,40 @@
+{% extends "store/base.html" %}
+{% block title %}Order #{{ order.id }} — ShopEasy{% endblock %}
+
+{% block content %}
+<a href="{% url 'order_list' %}" class="back-link">← Back to orders</a>
+
+<div class="order-detail-card">
+    <div class="order-detail-header">
+        <div>
+            <h2>Order #{{ order.id }}</h2>
+            <p class="order-date">Placed on {{ order.created_at|date:"M d, Y \a\t H:i" }}</p>
+        </div>
+        <span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span>
+    </div>
+
+    <div class="order-detail-grid">
+        <div>
+            <h4 class="mini-heading">Shipping To</h4>
+            <p>{{ order.full_name }}<br>{{ order.address }}<br>{{ order.city }}, {{ order.postal_code }}</p>
+        </div>
+    </div>
+
+    <h4 class="mini-heading">Items</h4>
+    {% for item in order.items.all %}
+    <div class="order-item-row">
+        <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}">
+        <div class="order-item-info">
+            <h4>{{ item.product.name }}</h4>
+            <p>Qty: {{ item.quantity }} × ₹{{ item.price }}</p>
+        </div>
+        <p class="order-item-subtotal">₹{{ item.subtotal }}</p>
+    </div>
+    {% endfor %}
+
+    <div class="order-detail-total">
+        <span>Total</span>
+        <span>₹{{ order.total_price }}</span>
+    </div>
+</div>
+{% endblock %}

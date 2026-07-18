@@ -1,0 +1,57 @@
+{% extends "store/base.html" %}
+{% block title %}Your Cart — ShopEasy{% endblock %}
+
+{% block content %}
+<h2 class="section-title">Your Cart</h2>
+
+{% if cart.items.all %}
+<div class="cart-layout">
+    <div class="cart-items">
+        {% for item in cart.items.all %}
+        <div class="cart-item-card">
+            <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}">
+            <div class="cart-item-info">
+                <h4>{{ item.product.name }}</h4>
+                <p class="price">₹{{ item.product.price }}</p>
+            </div>
+            <form action="{% url 'cart_update' item.id %}" method="post" class="qty-form">
+                {% csrf_token %}
+                <button type="submit" class="qty-btn" onclick="this.form.quantity.value=Math.max(0,parseInt(this.form.quantity.value)-1)">−</button>
+                <input type="number" name="quantity" value="{{ item.quantity }}" min="0">
+                <button type="submit" class="qty-btn" onclick="this.form.quantity.value=parseInt(this.form.quantity.value)+1">+</button>
+            </form>
+            <p class="cart-item-subtotal">₹{{ item.subtotal }}</p>
+            <form action="{% url 'cart_remove' item.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="remove-btn">✕</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="cart-summary-card">
+        <h3>Order Summary</h3>
+        <div class="summary-row">
+            <span>Items ({{ cart.total_items }})</span>
+            <span>₹{{ cart.total_price }}</span>
+        </div>
+        <div class="summary-row">
+            <span>Delivery</span>
+            <span class="free-tag">FREE</span>
+        </div>
+        <hr>
+        <div class="summary-row summary-total">
+            <span>Total</span>
+            <span>₹{{ cart.total_price }}</span>
+        </div>
+        <a href="{% url 'checkout' %}" class="btn btn-large" style="width:100%;">Proceed to Checkout</a>
+    </div>
+</div>
+{% else %}
+<div class="empty-state">
+    <span class="empty-icon">🛒</span>
+    <p>Your cart is empty.</p>
+    <a href="{% url 'product_list' %}" class="btn">Browse Products</a>
+</div>
+{% endif %}
+{% endblock %}

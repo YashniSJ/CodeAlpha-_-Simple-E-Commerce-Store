@@ -1,0 +1,28 @@
+{% extends "store/base.html" %}
+{% block title %}My Profile — ShopEasy{% endblock %}
+
+{% block content %}
+<div class="profile-header">
+    <div class="profile-avatar">{{ user.username|slice:":1"|upper }}</div>
+    <div>
+        <h2>{{ user.username }}</h2>
+        <p class="profile-email">{{ user.email|default:"No email on file" }}</p>
+    </div>
+</div>
+
+<div class="profile-stats">
+    <div class="stat-card">
+        <span class="stat-number">{{ orders_count }}</span>
+        <span class="stat-label">Total Orders</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number">{{ user.date_joined|date:"M Y" }}</span>
+        <span class="stat-label">Member Since</span>
+    </div>
+</div>
+
+<div class="profile-actions">
+    <a href="{% url 'order_list' %}" class="btn">📦 View My Orders</a>
+    <a href="{% url 'cart_detail' %}" class="btn btn-outline-dark">🛒 View My Cart</a>
+</div>
+{% endblock %}

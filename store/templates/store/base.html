@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}ShopEasy{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+</head>
+<body>
+    <header class="navbar">
+        <a href="{% url 'home' %}" class="logo">ShopEasy</a>
+        <form class="search-form" action="{% url 'product_list' %}" method="get">
+            <input type="text" name="q" placeholder="Search products..." value="{{ request.GET.q }}">
+            <button type="submit">Search</button>
+        </form>
+        <nav class="nav-links">
+            {% if user.is_authenticated %}
+    <a href="{% url 'cart_detail' %}" class="nav-icon-link">
+        <span class="nav-icon">🛒</span> Cart
+    </a>
+    <a href="{% url 'order_list' %}" class="nav-icon-link">
+        <span class="nav-icon">📦</span> My Orders
+    </a>
+    <a href="{% url 'profile' %}" class="nav-icon-link">
+        <span class="nav-icon">👤</span> Profile
+    </a>
+    <span>Hi, {{ user.username }}</span>
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="link-button">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="container">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="message {{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer"><p>&copy; 2026 ShopEasy</p></footer>
+    <script src="{% static 'store/js/main.js' %}"></script>
+</body>
+</html>

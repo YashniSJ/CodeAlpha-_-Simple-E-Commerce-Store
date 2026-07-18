@@ -1,0 +1,64 @@
+{% extends "store/base.html" %}
+{% load store_extras %}
+{% block title %}Products — ShopEasy{% endblock %}
+
+{% block content %}
+<div class="page-layout">
+    <aside class="sidebar">
+        <h3>Categories</h3>
+        <ul class="category-list">
+            <li><a href="{% url 'product_list' %}" class="{% if not selected_category %}active{% endif %}">All</a></li>
+            {% for category in categories %}
+                <li>
+                    <a href="?category={{ category.slug }}" class="{% if selected_category == category.slug %}active{% endif %}">
+                        {{ category.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <section class="product-grid">
+        {% for product in products %}
+            <div class="product-card">
+                <a href="{% url 'product_detail' product.slug %}">
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                    <h4>{{ product.name }}</h4>
+                </a>
+                <p class="price">₹{{ product.price }}</p>
+                <p class="stock {% if not product.in_stock %}out{% endif %}">
+                    {% if product.in_stock %}In stock ({{ product.stock }}){% else %}Out of stock{% endif %}
+                </p>
+                <div class="cart-control" data-product-id="{{ product.id }}" data-style="full">
+                {% if user.is_authenticated %}
+                    {% with qty=cart_quantities|get_item:product.id %}
+                    {% if qty %}
+                        <div class="mini-stepper">
+                            <form class="cart-form" action="{% url 'cart_decrement' product.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="qty-btn">−</button>
+                            </form>
+                            <span class="mini-stepper-count">{{ qty }}</span>
+                            <form class="cart-form" action="{% url 'cart_add' product.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="qty-btn">+</button>
+                            </form>
+                        </div>
+                    {% else %}
+                        <form class="cart-form" action="{% url 'cart_add' product.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn" {% if not product.in_stock %}disabled{% endif %}>Add to Cart</button>
+                        </form>
+                    {% endif %}
+                    {% endwith %}
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn">Login to buy</a>
+                {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p>No products found.</p>
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}

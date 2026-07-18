@@ -1,0 +1,16 @@
+{% extends "store/base.html" %}
+{% block content %}
+<div class="product-detail">
+    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+    <div>
+        <h2>{{ product.name }}</h2>
+        <p class="price-large">₹{{ product.price }}</p>
+        <p>{{ product.description }}</p>
+        <div class="cart-control" data-product-id="{{ product.id }}" data-style="full">
+    <form class="cart-form" action="{% url 'cart_add' product.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-large" {% if not product.in_stock %}disabled{% endif %}>Add to Cart</button>
+    </form>
+</div>
+</div>
+{% endblock %}

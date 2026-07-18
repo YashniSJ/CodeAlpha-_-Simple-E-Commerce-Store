@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ShopEasy — Shop Smarter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
+</head>
+<body>
+
+<div class="landing-page">
+    <div class="landing-blob blob-1"></div>
+    <div class="landing-blob blob-2"></div>
+    <div class="landing-blob blob-3"></div>
+
+    <nav class="landing-nav">
+        <span class="landing-logo">ShopEasy</span>
+        <div class="landing-nav-links">
+            {% if user.is_authenticated %}
+                <a href="{% url 'home' %}" class="btn">Go to Dashboard</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}" class="btn">Sign Up</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="landing-hero">
+        <span class="landing-eyebrow fade-in-up delay-1">Welcome to</span>
+        <h1 class="fade-in-up delay-2">ShopEasy</h1>
+        <p class="fade-in-up delay-3">Everything you need, delivered fast — electronics, fashion, home & more, all in one place.</p>
+        <div class="landing-cta fade-in-up delay-4">
+            <a href="{% url 'home' %}" class="btn btn-large">Start Shopping</a>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'register' %}" class="btn btn-large btn-outline">Create an Account</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="landing-features fade-in-up delay-5">
+        <div class="feature-item">
+            <span class="feature-icon">🚚</span>
+            <span>Fast Delivery</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">🔒</span>
+            <span>Secure Checkout</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">↩️</span>
+            <span>Easy Returns</span>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">💬</span>
+            <span>24/7 Support</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
