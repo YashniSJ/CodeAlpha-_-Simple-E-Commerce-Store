@@ -1289,3 +1289,113 @@ h1, h2, h3, h4 {
     color: var(--ink);
     margin-top: 4px;
 }
+/* ---------- Auth pages ---------- */
+.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+.auth-card {
+    background: var(--paper);
+    border-radius: var(--radius);
+    padding: 40px;
+    width: 100%;
+    max-width: 460px;
+    box-shadow: var(--shadow-hover);
+    border: 1px solid var(--border);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.auth-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.auth-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+}
+
+.auth-header p {
+    color: var(--text-soft);
+    font-size: 0.9rem;
+}
+
+.auth-card .form-group {
+    margin-bottom: 16px;
+}
+
+.auth-card .form-group label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-soft);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.auth-card .form-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+    background: #FAFAF8;
+}
+
+.auth-card .form-group input:focus {
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px rgba(245,166,35,0.12);
+}
+
+.field-error {
+    display: block;
+    color: #C0392B;
+    font-size: 0.8rem;
+    margin-top: 4px;
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    margin-top: 8px;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--text-soft);
+    font-size: 0.9rem;
+}
+
+.auth-switch a {
+    color: var(--amber-dark);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-switch a:hover { text-decoration: underline; }
+
+.auth-card ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.auth-card ul li {
+    font-size: 0.8rem;
+    color: var(--text-soft);
+    padding: 2px 0;
+}

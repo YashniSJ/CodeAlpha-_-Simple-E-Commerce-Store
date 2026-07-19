@@ -1,9 +1,30 @@
 {% extends "store/base.html" %}
+{% block title %}Login — ShopEasy{% endblock %}
+
 {% block content %}
-<h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn">Login</button>
-</form>
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="auth-header">
+            <span class="auth-icon">🔐</span>
+            <h2>Welcome Back</h2>
+            <p>Login to your ShopEasy account</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label>{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <span class="field-error">{{ field.errors.0 }}</span>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-large auth-btn">Login</button>
+        </form>
+
+        <p class="auth-switch">Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+    </div>
+</div>
 {% endblock %}
