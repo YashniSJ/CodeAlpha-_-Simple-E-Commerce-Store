@@ -52,5 +52,30 @@
 
     <footer class="footer"><p>&copy; 2026 ShopEasy</p></footer>
     <script src="{% static 'store/js/main.js' %}"></script>
+
+    {% if user.is_authenticated %}
+<nav class="bottom-nav">
+    <a href="{% url 'home' %}" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🏠</span>
+        <span>Home</span>
+    </a>
+    <a href="{% url 'product_list' %}" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🔍</span>
+        <span>Shop</span>
+    </a>
+    <a href="{% url 'cart_detail' %}" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🛒</span>
+        <span>Cart</span>
+    </a>
+    <a href="{% url 'order_list' %}" class="bottom-nav-item">
+        <span class="bottom-nav-icon">📦</span>
+        <span>Orders</span>
+    </a>
+    <a href="{% url 'profile' %}" class="bottom-nav-item">
+        <span class="bottom-nav-icon">👤</span>
+        <span>Profile</span>
+    </a>
+</nav>
+{% endif %}
 </body>
 </html>
